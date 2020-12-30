@@ -1,11 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
+  const[state, setState] = useState([]);
+
+  useEffect(() => {
+    setState([1,2,3,4]);
+  }, [])
+
+  console.log(state);
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>My first App!</Text>
+      {state.map(el => 
+        <Text key={el}>My first App! number {el}</Text>
+      )}
       <StatusBar style="auto" />
     </View>
   );
