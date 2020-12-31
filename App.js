@@ -1,32 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect }  from 'react';
+import { ScrollView, StyleSheet, Text, View, Modal } from 'react-native';
+import { AddTodo } from './src/AddTodo';
+import { Navbar } from './src/Navbar';
+import { Todo } from './src/Todo';
 
 export default function App() {
-  const[state, setState] = useState([]);
+  const[todos, setTodos] = useState([]);
+  const[modalVisible, setModalVisible] = useState(true);
 
-  useEffect(() => {
-    setState([1,2,3,4]);
-  }, [])
+  const addTodo = (todo) => {
+    setTodos(prevState =>[
+      {
+        id: Date.now().toString(),
+        title: todo.title
+      },
+      ...prevState
+    ])
+  }
 
-  console.log(state);
+  const removeTodo = (id) => {
+    const Updated = todos.filter(el => el.id != id);
+    setTodos(Updated);
+  }
 
   return (
-    <View style={styles.container}>
-      <Text>My first App!</Text>
-      {state.map(el => 
-        <Text key={el}>My first App! number {el}</Text>
-      )}
-      <StatusBar style="auto" />
+    <View>
+      <Navbar title="Some Todo App" />
+      <View style={styles.container}>
+        <AddTodo addTodo={addTodo} />
+        <ScrollView>
+        {todos.map(el => 
+        <Todo todo={el} removeTodo={removeTodo} />
+        )}
+        </ScrollView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 20
   },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    }
+  }
 });
